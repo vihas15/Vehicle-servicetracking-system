@@ -1,0 +1,37 @@
+class VehicleServiceTrackingSystem:
+    def __init__(self):
+        self.vehicles = []
+        self.service_schedules = {}
+        self.service_history = {}
+        self.service_reminders = set()
+    
+    def add_vehicle(self, vehicle_id):
+        if vehicle_id not in self.vehicles:
+            self.vehicles.append(vehicle_id)
+            self.service_schedules[vehicle_id] = []
+            self.service_history[vehicle_id] = []
+            print(f"Vehicle {vehicle_id} added.")
+        else:
+            print(f"Vehicle {vehicle_id} already exists.")
+    
+    def schedule_service(self, vehicle_id, service_date):
+        if vehicle_id in self.vehicles:
+            self.service_schedules[vehicle_id].append(service_date)
+            self.service_reminders.add((vehicle_id, service_date))
+            print(f"Service scheduled for vehicle {vehicle_id} on {service_date}.")
+        else:
+            print(f"Vehicle {vehicle_id} does not exist.")
+    
+    def record_service(self, vehicle_id, service_date):
+        if vehicle_id in self.vehicles:
+            if service_date in self.service_schedules[vehicle_id]:
+                self.service_schedules[vehicle_id].remove(service_date)
+                self.service_history[vehicle_id].append(service_date)
+                self.service_reminders.discard((vehicle_id, service_date))
+                print(f"Service for vehicle {vehicle_id} on {service_date} recorded.")
+            else:
+                print(f"No scheduled service for vehicle {vehicle_id} on {service_date}.")
+        else:
+            print(f"Vehicle {vehicle_id} does not exist.")
+    
+    main()
